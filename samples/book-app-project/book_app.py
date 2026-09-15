@@ -64,6 +64,28 @@ def handle_find():
     show_books(books)
 
 
+def handle_search_year() -> None:
+    print("\nFind Books by Publication Year\n")
+
+    start_year_input = input("Start year: ").strip()
+    end_year_input = input("End year: ").strip()
+
+    try:
+        start_year = int(start_year_input)
+        end_year = int(end_year_input)
+    except ValueError:
+        print("\nError: Years must be whole numbers.\n")
+        return
+
+    try:
+        books = collection.find_by_year_range(start_year, end_year)
+    except ValueError as error:
+        print(f"\nError: {error}\n")
+        return
+
+    show_books(books)
+
+
 def show_help():
     print("""
 Book Collection Helper
@@ -74,6 +96,7 @@ Commands:
   add          - Add a new book
   remove       - Remove a book by title
   find         - Find books by author
+  find-year    - Find books published between two years
   help         - Show this help message
 """)
 
@@ -95,6 +118,8 @@ def main():
         handle_remove()
     elif command == "find":
         handle_find()
+    elif command == "find-year":
+        handle_search_year()
     elif command == "help":
         show_help()
     else:
